@@ -318,10 +318,13 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
     assert (result);
     assert (fields_indexes);
 
+    printf ("From %s, %d\n", __func__, __LINE__);
     char* res_ptr = result;
     const char* arr_ptr = mp_array;
     mp_encode_array(res_ptr, fields_num);
     mp_next(&arr_ptr);
+    
+    printf ("From %s, %d\n", __func__, __LINE__);
     
     mp_next_slowpath(&arr_ptr, fields_indexes[0]);
     
@@ -331,6 +334,8 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
     memcpy (res_ptr, ptr_was, offset);
     res_ptr += offset; 
 
+    printf ("From %s, %d\n", __func__, __LINE__);
+    
     for (int i = 1; i < fields_num; ++i) {
         mp_next_slowpath (&arr_ptr, fields_indexes[i] - fields_indexes[i - 1] - 1);
         ptr_was = arr_ptr;
@@ -339,4 +344,6 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
         memcpy (res_ptr, ptr_was, offset);
         res_ptr += offset;
     }
+    printf ("From %s, %d\n", __func__, __LINE__);
+    
 }
