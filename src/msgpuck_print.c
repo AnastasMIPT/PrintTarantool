@@ -1,16 +1,11 @@
 
 #include "../include/msgpuck_print.h"
 #include <assert.h>
-
-
-
-
-// #define MP_SOURCE 1
 #include <msgpuck.h>
 
 
-const uint32_t NumElemInTupleOnOneLine = 5;
-const uint32_t NumElemInMapOnOneLine = 2;
+const uint32_t NumElemInTupleOnOneLineS = 5;
+const uint32_t NumElemInMapOnOneLineS = 2;
 
 
 
@@ -55,13 +50,13 @@ void print_array   (const char** data, unsigned int spaces_num) {
     
     unsigned int i = 0;
     printf ("[");
-    if (elem_count > NumElemInTupleOnOneLine) printf ("\n");
+    if (elem_count > NumElemInTupleOnOneLineS) printf ("\n");
     spaces_num += 2;
     for (i = 0; i < elem_count; ++i) {
-        if (elem_count > NumElemInTupleOnOneLine) print_spaces(spaces_num);
+        if (elem_count > NumElemInTupleOnOneLineS) print_spaces(spaces_num);
         print_element(data, spaces_num);
         if (i != elem_count - 1) printf(", ");
-        if (elem_count > NumElemInTupleOnOneLine) {
+        if (elem_count > NumElemInTupleOnOneLineS) {
             printf ("\n");
         } else if ( mp_typeof (**data) == MP_MAP) {
             printf ("\n");
@@ -69,7 +64,7 @@ void print_array   (const char** data, unsigned int spaces_num) {
         }
     }
     spaces_num -= 2;
-    if (elem_count > NumElemInTupleOnOneLine) print_spaces(spaces_num);
+    if (elem_count > NumElemInTupleOnOneLineS) print_spaces(spaces_num);
     printf ("]");
 }
 
@@ -90,19 +85,19 @@ void print_map     (const char** data, unsigned int spaces_num) {
     map_size = mp_decode_map (data);
     unsigned i = 0;
     printf("{");
-    if (map_size > NumElemInMapOnOneLine) printf("\n");
+    if (map_size > NumElemInMapOnOneLineS) printf("\n");
     spaces_num += 2;
     for (i = 0; i < map_size; ++i) {
-        if (map_size > NumElemInMapOnOneLine) print_spaces (spaces_num);
+        if (map_size > NumElemInMapOnOneLineS) print_spaces (spaces_num);
         print_element(data, spaces_num);
         printf(": ");
         print_element(data, spaces_num);
         if (i != map_size - 1) printf (", ");
-        if (map_size > NumElemInMapOnOneLine) printf ("\n");
+        if (map_size > NumElemInMapOnOneLineS) printf ("\n");
         
     }
     spaces_num -= 2; 
-    if (map_size > NumElemInMapOnOneLine) print_spaces (spaces_num);
+    if (map_size > NumElemInMapOnOneLineS) print_spaces (spaces_num);
     printf("}");
 }
 

@@ -4,8 +4,13 @@
 #include <tarantool/tnt_net.h>
 #include <tarantool/tnt_opt.h>
 #include <stdint.h>
-#include "../include/msgpuck_print.h"
+
 #include <msgpuck.h>
+
+
+#include "../include/msgpuck_print.h"
+#include "../include/msgpuck_sprint.h"
+
 
 const uint32_t NumTuplesInOneRequest = 2;
 const uint32_t MaxKeyFieldsInTuple   = 10;
@@ -50,16 +55,13 @@ void mp_copy_current (char** dest, const char** src);
 
 void main(int argc, char** argv) {
     setbuf(stdout, NULL);
-
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
     if (argc < 2) {
         printf ("ERROR: need space id\n");
         exit (1);
     }
     uint32_t space_id = atoi (argv[1]);
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
+    printf ("From %s, %d\n", __func__, __LINE__);
     
     struct tnt_stream *tnt = tnt_net (NULL);             // Создание нового потока
     tnt_set (tnt, TNT_OPT_URI, "localhost:3301");        // Установка порта
@@ -69,19 +71,16 @@ void main(int argc, char** argv) {
     }
 
     // printf ("From %s, %d\n", __func__, __LINE__);
-    
+
+
+
+
+
     struct tnt_reply reply;
     struct tnt_stream* cur_tuple = select_some_first (tnt, space_id, NumTuplesInOneRequest, &reply);
     print_element (&reply.data, 0);
     printf ("\n");
 
-    // const char* data_key = TNT_SBUF_DATA (cur_tuple);
-    // assert (mp_typeof(*data_key) == MP_ARRAY);
-    // uint32_t num_el = mp_decode_array(&data_key);
-    // printf ("num_el = %u\n", num_el);
-   
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
     while(true) {
         // printf ("From %s, %d\n", __func__, __LINE__);
         struct tnt_reply reply;
@@ -105,7 +104,7 @@ uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t sp
     assert (s);
     assert (key_fields);
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
+    printf ("From %s, %d\n", __func__, __LINE__);
     
     struct tnt_stream *tuple = tnt_object (NULL); 
     tnt_object_format (tuple, "[%d,%d]", space, 0);                     
@@ -166,7 +165,7 @@ struct tnt_stream* select_some_first (struct tnt_stream* s, uint32_t space_id, u
                                                                         struct tnt_reply* reply) {
     assert (s);
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
+    printf ("From %s, %d\n", __func__, __LINE__);
     
     struct tnt_stream* tuple = tnt_object (NULL);        
     tnt_object_format (tuple, "[]");            
@@ -229,10 +228,13 @@ struct tnt_stream* get_new_key_by_reply (struct tnt_stream* s, uint32_t space_id
     assert (s);
     assert (reply->data);
 
+    printf ("From %s, %d\n", __func__, __LINE__);
+    
+
     uint32_t key_fields[MaxKeyFieldsInTuple];
     uint32_t fields_num = get_key_fields (s, key_fields, space_id);
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
+    printf ("From %s, %d\n", __func__, __LINE__);
     uint32_t byte_num = 0;
     char last_tuple[BUFSIZ]  = {};
     char new_key_buf[BUFSIZ] = {};
@@ -256,33 +258,4 @@ struct tnt_stream* get_new_key_by_reply (struct tnt_stream* s, uint32_t space_id
     // printf ("From %s, %d\n", __func__, __LINE__);
 
     return new_key;
-}
-
-
-void mp_next_fast (const char** data, int k) {
-    const char** copy = data;
-    printf ("\n");
-    print_element (copy, 0);
-    printf ("\n\n\n");
-    while (k > 0)
-    {
-        printf ("k = %d\n", k);
-        uint32_t type = mp_typeof (**data);
-        if (type != MP_ARRAY && type != MP_MAP) {
-            printf ("not array, type = %u\n", type);
-            //printf ("uint = %lu\n", mp_decode_uint(data));
-    
-            mp_next (data);
-        } else {
-            printf ("array\n");
-            printf ("data = %p\n", *data);
-            uint32_t size = (type == MP_ARRAY? mp_decode_array(data) : mp_decode_map(data));
-            
-            printf ("data = %p\n", *data);
-            printf ("type = %d\n", mp_typeof (**data));
-            mp_next_fast (data, size);
-            printf ("size = %u\n", size);
-        }
-        k--;
-    }
 }

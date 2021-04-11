@@ -1,0 +1,5 @@
+/home/anastas/git/TarantoolWorks/PrintTarantool/build/CMakeFiles/rebuild_cache.dir
+/home/anastas/git/TarantoolWorks/PrintTarantool/build/CMakeFiles/edit_cache.dir
+/home/anastas/git/TarantoolWorks/PrintTarantool/build/CMakeFiles/test.dir
+/home/anastas/git/TarantoolWorks/PrintTarantool/build/CMakeFiles/print_space_ex.dir
+/home/anastas/git/TarantoolWorks/PrintTarantool/build/CMakeFiles/PrintMsgPuckTest.test.dir

@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/anastas/git/TarantoolWorks/PrintTarantool/include/msgpuck_sprint.h
+stdio.h
+-
+stdlib.h
+-
+
+/home/anastas/git/TarantoolWorks/PrintTarantool/test/./Utils/Helpers.hpp
+cassert
+-
+cstdarg
+-
+iostream
+-
+
+/home/anastas/git/TarantoolWorks/PrintTarantool/test/PrintMsgPuckTest.cpp
+msgpuck.h
+-
+string.h
+-
+../include/msgpuck_sprint.h
+/home/anastas/git/TarantoolWorks/PrintTarantool/include/msgpuck_sprint.h
+./Utils/Helpers.hpp
+/home/anastas/git/TarantoolWorks/PrintTarantool/test/./Utils/Helpers.hpp
+
