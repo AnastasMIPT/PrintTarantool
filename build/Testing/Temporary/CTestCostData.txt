@@ -1,3 +1,0 @@
-PrintMsgPuckTest.test 0 0
----
-PrintMsgPuckTest.test
