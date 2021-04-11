@@ -4,45 +4,12 @@
 #include <tarantool/tnt_net.h>
 #include <tarantool/tnt_opt.h>
 #include <stdint.h>
-
-#define MP_SOURCE 1
+#include "../include/msgpuck_print.h"
 #include <msgpuck.h>
 
-
-const uint32_t NumElemInTupleOnOneLine = 5;
-const uint32_t NumElemInMapOnOneLine = 2;
-const uint32_t NumTuplesInOneRequest = 10;
+const uint32_t NumTuplesInOneRequest = 2;
 const uint32_t MaxKeyFieldsInTuple   = 10;
 const uint32_t IdOfIndexSpace = 288;
-
-/*! Function for printing arbitrary MsgPack object
-*	\param reply pointer to buffer with reply form commands like select 
-*	\param spaces_num number of spaces to indent
-*/
-void print_element (const char** data, unsigned int spaces_num);
-
-
-/*! Function for printing arbitrary MsgPack array
-*	\param reply pointer to buffer with reply form commands like select 
-*	\param spaces_num number of spaces to indent
-*/
-void print_array   (const char** data, unsigned int spaces_num);
-
-/*! Function for printing arbitrary MsgPack unsigned int
-*	\param reply pointer to buffer with reply form commands like select 
-*	\param spaces_num number of spaces to indent
-*/
-void print_uint    (const char** reply, unsigned int spaces_num);
-
-/*! Function for printing arbitrary MsgPack string
-*	\param reply pointer to buffer with reply form commands like select 
-*	\param spaces_num number of spaces to indent
-*/
-void print_str     (const char** data, unsigned int spaces_num);
-void print_map     (const char** data, unsigned int spaces_num);
-void print_reply   (const char** data, unsigned int spaces_num);
-void print_bool    (const char** data, unsigned int spaces_num);
-void print_spaces  (unsigned int num);
 
 
 // TODO unit tests with complicated primary key, small array key_fields. Add errors handling connected to 
@@ -77,6 +44,9 @@ struct tnt_stream* get_new_key_by_reply (struct tnt_stream* s, uint32_t space_id
 
 void mp_next_fast (const char** data, int k);
 
+void mp_copy_current (char** dest, const char** src);
+
+
 
 void main(int argc, char** argv) {
     setbuf(stdout, NULL);
@@ -105,13 +75,11 @@ void main(int argc, char** argv) {
     print_element (&reply.data, 0);
     printf ("\n");
 
-    const char* data_key = TNT_SBUF_DATA (cur_tuple);
-    assert (mp_typeof(*data_key) == MP_ARRAY);
-    uint32_t num_el = mp_decode_array(&data_key);
-    printf ("num_el = %u\n", num_el);
-    assert (mp_typeof(*data_key) == MP_UINT);
-    printf ("key = %lu\n", mp_decode_uint (&data_key));
-
+    // const char* data_key = TNT_SBUF_DATA (cur_tuple);
+    // assert (mp_typeof(*data_key) == MP_ARRAY);
+    // uint32_t num_el = mp_decode_array(&data_key);
+    // printf ("num_el = %u\n", num_el);
+   
     // printf ("From %s, %d\n", __func__, __LINE__);
     
     while(true) {
@@ -131,112 +99,6 @@ void main(int argc, char** argv) {
     
     tnt_close (tnt);
     tnt_stream_free (tnt);
-}
-
-
-void print_element (const char** data, unsigned int spaces_num) {
-    char element_type = mp_typeof (**data);
-    switch (element_type)
-    {
-    case MP_ARRAY:
-        print_array (data, spaces_num);       
-        break;
-    case MP_UINT:
-        print_uint  (data, spaces_num);       
-        break;
-    case MP_STR:
-        print_str   (data, spaces_num);
-        break;
-    case MP_BOOL:
-        print_bool  (data, spaces_num);
-        break;
-    case MP_DOUBLE:
-        printf("double\n");
-        break;
-    case MP_NIL:
-        printf("nill");
-        break;
-    case MP_EXT:
-        printf("ext\n");
-        break;
-    case MP_MAP:
-        print_map(data, spaces_num);
-        break;
-    default:
-        printf("PARSE ERROR: Unknown type = %d\n", element_type);
-        exit(1);
-        break;
-    }
-}
-
-void print_array   (const char** data, unsigned int spaces_num) {
-    uint32_t elem_count = mp_decode_array(data);
-    
-    unsigned int i = 0;
-    printf ("[");
-    if (elem_count > NumElemInTupleOnOneLine) printf ("\n");
-    spaces_num += 2;
-    for (i = 0; i < elem_count; ++i) {
-        if (elem_count > NumElemInTupleOnOneLine) print_spaces(spaces_num);
-        print_element(data, spaces_num);
-        if (i != elem_count - 1) printf(", ");
-        if (elem_count > NumElemInTupleOnOneLine) {
-            printf ("\n");
-        } else if ( mp_typeof (**data) == MP_MAP) {
-            printf ("\n");
-            if (i != elem_count - 1) print_spaces(spaces_num - 1);
-        }
-    }
-    spaces_num -= 2;
-    if (elem_count > NumElemInTupleOnOneLine) print_spaces(spaces_num);
-    printf ("]");
-}
-
-void print_uint    (const char** data, unsigned int spaces_num) {
-    uint64_t num_value = mp_decode_uint(data);
-    printf("%lu", num_value);
-}
-
-void print_str     (const char** data, unsigned int spaces_num) {
-    const char * str_value = NULL;
-    uint32_t str_value_length = 0;
-    str_value = mp_decode_str(data, &str_value_length);
-    printf("\"%.*s\"", str_value_length, str_value);
-}
-
-void print_map     (const char** data, unsigned int spaces_num) {
-    uint32_t map_size = 0;
-    map_size = mp_decode_map (data);
-    unsigned i = 0;
-    printf("{");
-    if (map_size > NumElemInMapOnOneLine) printf("\n");
-    spaces_num += 2;
-    for (i = 0; i < map_size; ++i) {
-        if (map_size > NumElemInMapOnOneLine) print_spaces (spaces_num);
-        print_element(data, spaces_num);
-        printf(": ");
-        print_element(data, spaces_num);
-        if (i != map_size - 1) printf (", ");
-        if (map_size > NumElemInMapOnOneLine) printf ("\n");
-        
-    }
-    spaces_num -= 2; 
-    if (map_size > NumElemInMapOnOneLine) print_spaces (spaces_num);
-    printf("}");
-}
-
-void print_bool (const char** data, unsigned int spaces_num) {
-    if (mp_decode_bool(data)) {
-        printf("true");
-    } else {
-        printf("false");
-    }
-}
-
-void print_spaces (unsigned int num) {
-    for (unsigned int i = 0; i < num; ++i) {
-        printf(" ");
-    }
 }
 
 uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t space) {
@@ -339,52 +201,27 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
     printf ("field_indexes[0] = %u\n", fields_indexes[0]);
     printf ("arr_ptr_was = %p\n", arr_ptr);
     
-    mp_next(&arr_ptr);
-    mp_next_fast (&arr_ptr, fields_indexes[0]);
+    mp_decode_array (&arr_ptr);
+    mp_next_slowpath (&arr_ptr, fields_indexes[0]);
+    mp_copy_current (&res_ptr, &arr_ptr);
     
-    printf ("arr_ptr_is = %p\n", arr_ptr);
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
-    const char* ptr_was = arr_ptr;
-    printf ("type = %d\n", mp_typeof(*arr_ptr));
-    printf ("uint = %lu\n", mp_decode_uint(&arr_ptr));
-    //assert (mp_typeof(*arr_ptr) == MP_ARRAY);
-    mp_next (&arr_ptr);
-    printf ("arr_ptr_is = %p\n", arr_ptr);
-    
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
-    int offset = arr_ptr - ptr_was; //TODO function
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
-    printf ("res_ptr = %p, %p, %d\n", res_ptr, ptr_was, offset);
-
-    assert (mp_typeof(*result) == MP_ARRAY);
-    //printf ("decoded = %lu\n", mp_decode_uint(&ptr_was));
-    memcpy (res_ptr, ptr_was, offset);
-    assert (mp_typeof(*result) == MP_ARRAY);
-    //assert (mp_typeof(*res_ptr) == MP_ARRAY);
-    //printf ("decoded = %lu\n", mp_decode_uint(&res_ptr));    
-
-    res_ptr += offset; 
-
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
-
-    assert (mp_typeof(*result) == MP_ARRAY);
     for (int i = 1; i < fields_num; ++i) {
-        mp_next_fast (&arr_ptr, fields_indexes[i] - fields_indexes[i - 1] - 1);
-        ptr_was = arr_ptr;
-        mp_next (&arr_ptr);
-        offset = ptr_was - arr_ptr;
-        memcpy (res_ptr, ptr_was, offset);
-        res_ptr += offset;
+        mp_next_slowpath (&arr_ptr, fields_indexes[i] - fields_indexes[i - 1] - 1);
+        mp_copy_current (&res_ptr, &arr_ptr);
     }
 
     if (byte_num != NULL) *byte_num = res_ptr - result;
     // printf ("From %s, %d\n", __func__, __LINE__);
     
     assert (mp_typeof(*result) == MP_ARRAY);
+}
+
+void mp_copy_current (char** dest, const char** src) {
+    const char* ptr_was = *src;
+    mp_next (src);
+    int offset = *src - ptr_was;
+    memcpy (*dest, ptr_was, offset);
+    *dest += offset; 
 }
 
 struct tnt_stream* get_new_key_by_reply (struct tnt_stream* s, uint32_t space_id, struct tnt_reply* reply) {
