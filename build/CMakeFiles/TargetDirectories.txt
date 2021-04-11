@@ -1,3 +1,0 @@
-/home/anastas/git/TarantoolWorks/PrintTarantool/print-c-connector/build/CMakeFiles/rebuild_cache.dir
-/home/anastas/git/TarantoolWorks/PrintTarantool/print-c-connector/build/CMakeFiles/print_space_ex.dir
-/home/anastas/git/TarantoolWorks/PrintTarantool/print-c-connector/build/CMakeFiles/edit_cache.dir
