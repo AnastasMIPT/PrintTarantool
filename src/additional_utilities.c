@@ -16,11 +16,8 @@ uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t sp
     assert (s);
     assert (key_fields);
 
-    printf ("From %s, %d\n", __func__, __LINE__);
-    
     struct tnt_stream *tuple = tnt_object (NULL); 
     tnt_object_format (tuple, "[%d,%d]", space, 0);                     
-    // printf ("From %s, %d\n", __func__, __LINE__);
     
     tnt_select (s, IdOfIndexSpace,  0, 1, 0, TNT_ITER_ALL, tuple);
     tnt_flush (s);
@@ -28,16 +25,12 @@ uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t sp
         
     struct tnt_reply reply; tnt_reply_init (&reply);
     s->read_reply (s, &reply);
-    // printf ("From %s, %d\n", __func__, __LINE__);
     
     mp_decode_array  (&reply.data);
     mp_decode_array  (&reply.data);
     mp_next_slowpath (&reply.data, 5);
     
-    // printf ("From %s, %d\n", __func__, __LINE__);
-    
     uint32_t fields_num = mp_decode_array (&reply.data);
-    // printf ("From %s, %d\n", __func__, __LINE__);
     
     for (int i = 0; i < fields_num; ++i) {
         assert (2 == mp_decode_array (&reply.data));
@@ -45,7 +38,6 @@ uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t sp
         mp_next (&reply.data);
     }
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
     tnt_stream_free (tuple);
     return fields_num;
 }
@@ -77,7 +69,6 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
     }
 
     if (byte_num != NULL) *byte_num = res_ptr - result;
-    // printf ("From %s, %d\n", __func__, __LINE__);
     
     assert (mp_typeof(*result) == MP_ARRAY);
 }
