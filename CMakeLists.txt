@@ -14,6 +14,10 @@ target_link_libraries(print_space_ex PUBLIC tarantool)
 
 
 add_executable(PrintMsgPuckTest.test test/PrintMsgPuckTest.cpp src/msgpuck_sprint.c src/mp_source.c)
+add_executable(GetMsgPuckSubArray.test test/GetMsgPuckSubArray.cpp src/msgpuck_sprint.c src/mp_source.c src/additional_utilities.c)
+target_link_libraries(GetMsgPuckSubArray.test PUBLIC tarantool)
+
 
 enable_testing()
 add_test(NAME PrintMsgPuckTest.test COMMAND PrintMsgPuckTest.test)
+add_test(NAME GetMsgPuckSubArray.test COMMAND GetMsgPuckSubArray.test)
