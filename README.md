@@ -8,7 +8,24 @@ OS is Linux.
 
 Steps to build:
 ```
-cmake .  
+mkdir build
+cd build
+cmake ..
 make
 ```
 
+## Testing
+
+```
+make test
+```
+You can view the test log file via this path ./build/Testing/Temporary/LastTest.log.
+
+
+## Install
+
+Steps to install:
+```
+make install
+```
+After this you can execute command 'print_space' *space_id* in any directory.
