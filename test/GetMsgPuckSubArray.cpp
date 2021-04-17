@@ -27,12 +27,14 @@ void TestSimpleArray () {
 
         const char* data_p = data;
 
-        get_subarr_from_mp_array (data_p, result, filed_no, 3, NULL);
+        uint32_t bytes_mum = 0;
+        get_subarr_from_mp_array (data_p, result, filed_no, 3, &bytes_mum);
         const char* result_p = result;
         char* printed_data_p = printed_data;
         sprint_array (&result_p, 0, &printed_data_p);
         printf ("prited data = *%s*\n", printed_data);
 
+        fail_if (bytes_mum != result_p - result);
         fail_if (strncmp (printed_data, "[\"test str\", 27, \"some str\"]", 29) != 0);
     }
     
@@ -42,12 +44,14 @@ void TestSimpleArray () {
 
         const char* data_p = data;
 
-        get_subarr_from_mp_array (data_p, result, filed_no, 3, NULL);
+        uint32_t bytes_mum = 0;
+        get_subarr_from_mp_array (data_p, result, filed_no, 3, &bytes_mum);
         const char* result_p = result;
         char* printed_data_p = printed_data;
         sprint_array (&result_p, 0, &printed_data_p);
         printf ("prited data = *%s*\n", printed_data);
 
+        fail_if (bytes_mum != result_p - result);
         fail_if (strncmp (printed_data, "[\"test str\", \"somth\", 98]", 26) != 0);
     }
 }
@@ -82,12 +86,14 @@ void TestComplicatedArray () {
 
         const char* data_p = data;
 
-        get_subarr_from_mp_array (data_p, result, filed_no, 4, NULL);
+        uint32_t bytes_mum = 0;
+        get_subarr_from_mp_array (data_p, result, filed_no, 4, &bytes_mum);
         const char* result_p = result;
         char* printed_data_p = printed_data;
         sprint_array (&result_p, 0, &printed_data_p);
         printf ("prited data = *%s*\n", printed_data);
 
+        fail_if (bytes_mum != result_p - result);
         fail_if (strncmp (printed_data, "[\"test str\", [265, 38, \"dog\"], \"some str\", 98]", 47) != 0);
     }
     
@@ -97,12 +103,14 @@ void TestComplicatedArray () {
 
         const char* data_p = data;
 
-        get_subarr_from_mp_array (data_p, result, filed_no, 3, NULL);
+        uint32_t bytes_mum = 0;
+        get_subarr_from_mp_array (data_p, result, filed_no, 3, &bytes_mum);
         const char* result_p = result;
         char* printed_data_p = printed_data;
         sprint_array (&result_p, 0, &printed_data_p);
         printf ("prited data = *%s*\n", printed_data);
 
+        fail_if (bytes_mum != result_p - result);
         fail_if (strncmp (printed_data, "[27, \"some str\", [[32, 123456], 35]]", 37) != 0);
     }
 }
