@@ -12,7 +12,7 @@
 #include "../include/msgpuck_sprint.h"
 #include "../include/improved_select.h"
 
-const uint32_t NumTuplesInOneRequest = 2;
+const uint32_t NumTuplesInOneRequest = 7;
 
 void main(int argc, char** argv) {
     setbuf(stdout, NULL);
