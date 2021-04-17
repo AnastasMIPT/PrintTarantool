@@ -7,10 +7,12 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 
-add_executable(print_space_ex ../src/print_space.c ../src/mp_source.c ../src/msgpuck_print.c ../src/msgpuck_sprint.c ../src/improved_select.c ../src/additional_utilities.c)
-#target_sources(print_space_ex ../src/improved_select.c)
-#target_sources(print_space_ex ../src/additional_utilities.c)
-target_link_libraries(print_space_ex PUBLIC tarantool)
+add_executable(print_space ../src/print_space.c ../src/mp_source.c ../src/msgpuck_print.c ../src/msgpuck_sprint.c ../src/improved_select.c ../src/additional_utilities.c)
+#target_sources(print_space ../src/improved_select.c)
+#target_sources(print_space ../src/additional_utilities.c)
+target_link_libraries(print_space PUBLIC tarantool)
+
+install(TARGETS print_space DESTINATION /usr/local/bin/)
 
 
 add_executable(PrintMsgPuckTest.test test/PrintMsgPuckTest.cpp src/msgpuck_sprint.c src/mp_source.c)
