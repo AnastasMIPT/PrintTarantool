@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "msgpuck_sprint.h": "c"
+        "msgpuck_sprint.h": "c",
+        "msgpuck_sprint.hpp": "c"
     }
 }

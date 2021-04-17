@@ -51,13 +51,9 @@ void get_subarr_from_mp_array (const char* mp_array, char* result, uint32_t* fie
     assert (fields_indexes);
     assert (mp_typeof(*mp_array) == MP_ARRAY);
 
-    // printf ("From %s, %d\n", __func__, __LINE__);
     char* res_ptr = result;
     const char* arr_ptr = mp_array;
-    printf ("res_p %p\n", res_ptr);
     res_ptr = mp_encode_array(res_ptr, fields_num);
-    printf ("field_indexes[0] = %u\n", fields_indexes[0]);
-    printf ("arr_ptr_was = %p\n", arr_ptr);
     
     mp_decode_array (&arr_ptr);
     mp_next_slowpath (&arr_ptr, fields_indexes[0]);

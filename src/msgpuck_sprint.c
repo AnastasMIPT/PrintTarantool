@@ -87,7 +87,7 @@ void sprint_uint    (const char** data, unsigned int spaces_num, char** sprint_b
 void sprint_str     (const char** data, unsigned int spaces_num, char** sprint_buf) {
     const char * str_value = NULL;
     uint32_t str_value_length = 0;
-    str_value = mp_decode_str(data, &str_value_length);
+    str_value = mp_decode_str (data, &str_value_length);
     sprintf (*sprint_buf, "\"%.*s\"", str_value_length, str_value);
     *sprint_buf += str_value_length + 1;
 }
