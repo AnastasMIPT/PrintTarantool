@@ -12,7 +12,7 @@
 #include "../include/msgpuck_sprint.h"
 #include "../include/improved_select.h"
 
-const uint32_t NumTuplesInOneRequest = 7;
+const uint32_t NumTuplesInOneRequest = 6;
 
 void main(int argc, char** argv) {
     setbuf(stdout, NULL);
@@ -31,13 +31,13 @@ void main(int argc, char** argv) {
         exit (1);
     }
 
-    struct tnt_reply reply;
+    struct tnt_reply reply = {};
     struct tnt_stream* cur_tuple = select_some_first (tnt, space_id, NumTuplesInOneRequest, &reply);
     print_element (&reply.data, 0);
     printf ("\n");
 
     while(true) {
-        struct tnt_reply reply;
+        struct tnt_reply reply = {};
         cur_tuple = select_some_after_key (tnt, space_id, NumTuplesInOneRequest, cur_tuple, &reply);
         
         if (cur_tuple == NULL) {

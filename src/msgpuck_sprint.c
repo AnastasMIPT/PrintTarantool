@@ -5,11 +5,12 @@
 
 
 const uint32_t NumElemInTupleOnOneLine = 5;
-const uint32_t NumElemInMapOnOneLine = 2;
+const uint32_t NumElemInMapOnOneLine   = 2;
 
 
 void sprint_element (const char** data, unsigned int spaces_num, char** sprint_buf) {
     char element_type = mp_typeof (**data);
+
     switch (element_type)
     {
     case MP_ARRAY:
@@ -34,7 +35,7 @@ void sprint_element (const char** data, unsigned int spaces_num, char** sprint_b
         sprintf (*sprint_buf, "ext\n");
         break;
     case MP_MAP:
-        sprint_map(data, spaces_num, sprint_buf);
+        sprint_map (data, spaces_num, sprint_buf);
         break;
     default:
         sprintf (*sprint_buf, "PARSE ERROR: Unknown type = %d\n", element_type);
@@ -44,7 +45,7 @@ void sprint_element (const char** data, unsigned int spaces_num, char** sprint_b
 }
 
 void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf) {
-    uint32_t elem_count = mp_decode_array(data);
+    uint32_t elem_count = mp_decode_array (data);
     
     unsigned int i = 0;
     sprintf (*sprint_buf, "[");
@@ -55,13 +56,19 @@ void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_b
         *sprint_buf += 1;
     }
     spaces_num += 2;
+
     for (i = 0; i < elem_count; ++i) {
-        if (elem_count > NumElemInTupleOnOneLine) sprint_spaces (spaces_num, sprint_buf);
+        
+        if (elem_count > NumElemInTupleOnOneLine) {
+            sprint_spaces (spaces_num, sprint_buf);
+        }
         sprint_element (data, spaces_num, sprint_buf);
+        
         if (i != elem_count - 1)  {
             sprintf (*sprint_buf, ", ");
             *sprint_buf += 2;
         }
+        
         if (elem_count > NumElemInTupleOnOneLine) {
             sprintf (*sprint_buf, "\n");
             *sprint_buf += 1;
@@ -78,14 +85,14 @@ void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_b
 }
 
 void sprint_uint    (const char** data, unsigned int spaces_num, char** sprint_buf) {
-    uint64_t num_value = mp_decode_uint (data);
+    uint64_t num_value   = mp_decode_uint (data);
     uint32_t printed_num = 0;
     sprintf (*sprint_buf, "%lu%n", num_value, &printed_num);
     *sprint_buf += printed_num;
 }
 
 void sprint_str     (const char** data, unsigned int spaces_num, char** sprint_buf) {
-    const char * str_value = NULL;
+    const char * str_value    = NULL;
     uint32_t str_value_length = 0;
     str_value = mp_decode_str (data, &str_value_length);
     sprintf (*sprint_buf, "\"%.*s\"", str_value_length, str_value);
@@ -94,7 +101,7 @@ void sprint_str     (const char** data, unsigned int spaces_num, char** sprint_b
 
 void sprint_map     (const char** data, unsigned int spaces_num, char** sprint_buf) {
     uint32_t map_size = 0;
-    map_size = mp_decode_map (data);
+    map_size   = mp_decode_map (data);
     unsigned i = 0;
 
     sprintf (*sprint_buf, "{");
