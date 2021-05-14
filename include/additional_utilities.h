@@ -17,7 +17,12 @@ uint32_t get_key_fields (struct tnt_stream* s, uint32_t* key_fields, uint32_t sp
 
 
 
-
+/*! Function for getting numbers of key fileds in tuple that primary key contains
+*	\param dest pointer to element of destination mp_array 
+*	\param src  pointer to element of source mp_array
+*   
+*   \returns number of key fields
+*/
 void mp_copy_current (char** dest, const char** src);
 
 

@@ -13,7 +13,7 @@ void TestPrintStr () {
 
     char printed_data[BUFSIZ] = {};
     char* printed_data_p = printed_data;
-    const char* data_p = data;
+    const char* data_p   = data;
     sprint_str (&data_p, 0, &printed_data_p);
     printf ("prited data = *%s*\n", printed_data);
     fail_if (strncmp (printed_data, "\"testing string\"", 15) != 0);
@@ -26,7 +26,7 @@ void TestPrintUint () {
 
     char printed_data[BUFSIZ] = {};
     char* printed_data_p = printed_data;
-    const char* data_p = data;
+    const char* data_p   = data;
     sprint_uint (&data_p, 0, &printed_data_p);
     printf ("prited data = *%s*\n", printed_data);
     
@@ -36,16 +36,16 @@ void TestPrintUint () {
 
 void TestPrintArray () {
     TEST_INIT (0);
-    char data[BUFSIZ] = {};
+    char data[BUFSIZ]         = {};
     char printed_data[BUFSIZ] = {};
     
     TEST_CASE ("Simple array");
     {
         char* ptr = data;
         ptr = mp_encode_array (ptr, 3);
-        ptr = mp_encode_str (ptr, "test str", 9);
-        ptr = mp_encode_str (ptr, "somth", 6);
-        ptr = mp_encode_uint (ptr, 27);
+        ptr = mp_encode_str   (ptr, "test str", 9);
+        ptr = mp_encode_str   (ptr, "somth", 6);
+        ptr = mp_encode_uint  (ptr, 27);
 
         const char* data_p = data;
         char* printed_data_p = printed_data;
@@ -59,12 +59,12 @@ void TestPrintArray () {
         memchr (data, 0, BUFSIZ);
         char* ptr = data;
         ptr = mp_encode_array (ptr, 2);
-        ptr = mp_encode_uint (ptr, 27);
+        ptr = mp_encode_uint  (ptr, 27);
         ptr = mp_encode_array (ptr, 2);
             ptr = mp_encode_uint (ptr, 24);
             ptr = mp_encode_uint (ptr, 123);
         
-        const char* data_p = data;
+        const char* data_p   = data;
         char* printed_data_p = printed_data;
         sprint_array (&data_p, 0, &printed_data_p);
     
@@ -75,15 +75,15 @@ void TestPrintArray () {
         memchr (data, 0, BUFSIZ);
         char* ptr = data;
         ptr = mp_encode_array (ptr, 4);
-        ptr = mp_encode_str (ptr, "test str", 9);
+        ptr = mp_encode_str   (ptr, "test str", 9);
         ptr = mp_encode_array (ptr, 3);
             ptr = mp_encode_uint (ptr, 265);
             ptr = mp_encode_uint (ptr, 38);
-            ptr = mp_encode_str (ptr, "dog", 4);
-        ptr = mp_encode_str (ptr, "some str", 9);
+            ptr = mp_encode_str  (ptr, "dog", 4);
+        ptr = mp_encode_str  (ptr, "some str", 9);
         ptr = mp_encode_uint (ptr, 98);
         
-        const char* data_p = data;
+        const char* data_p   = data;
         char* printed_data_p = printed_data;
         sprint_array (&data_p, 0, &printed_data_p);
     

@@ -9,16 +9,16 @@ extern "C" void get_subarr_from_mp_array (const char* mp_array, char* result, ui
 
 void TestSimpleArray () {
     TEST_INIT (0);
-    char data[BUFSIZ] = {};
-    char result[BUFSIZ] = {};
+    char data[BUFSIZ]         = {};
+    char result[BUFSIZ]       = {};
     char printed_data[BUFSIZ] = {};
     
     char* ptr = data;
     ptr = mp_encode_array (ptr, 5);
-        ptr = mp_encode_str (ptr, "test str", 9);
-        ptr = mp_encode_str (ptr, "somth", 6);
+        ptr = mp_encode_str  (ptr, "test str", 9);
+        ptr = mp_encode_str  (ptr, "somth", 6);
         ptr = mp_encode_uint (ptr, 27);
-        ptr = mp_encode_str (ptr, "some str", 9);
+        ptr = mp_encode_str  (ptr, "some str", 9);
         ptr = mp_encode_uint (ptr, 98);
 
 
@@ -59,25 +59,25 @@ void TestSimpleArray () {
 
 void TestComplicatedArray () {
     TEST_INIT (0);
-    char data[BUFSIZ] = {};
-    char result[BUFSIZ] = {};
+    char data[BUFSIZ]         = {};
+    char result[BUFSIZ]       = {};
     char printed_data[BUFSIZ] = {};
     
     char* ptr = data;
     ptr = mp_encode_array (ptr, 7);
-        ptr = mp_encode_str (ptr, "test str", 9);
-        ptr = mp_encode_str (ptr, "somth", 6);
-        ptr = mp_encode_uint (ptr, 27);
+        ptr = mp_encode_str   (ptr, "test str", 9);
+        ptr = mp_encode_str   (ptr, "somth", 6);
+        ptr = mp_encode_uint  (ptr, 27);
         ptr = mp_encode_array (ptr, 3);
             ptr = mp_encode_uint (ptr, 265);
             ptr = mp_encode_uint (ptr, 38);
-            ptr = mp_encode_str (ptr, "dog", 4);
-        ptr = mp_encode_str (ptr, "some str", 9);
+            ptr = mp_encode_str  (ptr, "dog", 4);
+        ptr = mp_encode_str   (ptr, "some str", 9);
         ptr = mp_encode_array (ptr, 2);
             ptr = mp_encode_array (ptr, 2);
                 ptr = mp_encode_uint (ptr, 32);
                 ptr = mp_encode_uint (ptr, 123456);
-            ptr = mp_encode_uint (ptr, 35);
+            ptr = mp_encode_uint  (ptr, 35);
         ptr = mp_encode_uint (ptr, 98);
 
 

@@ -15,19 +15,18 @@
 const uint32_t NumTuplesInOneRequest = 6;
 
 void main(int argc, char** argv) {
-    setbuf(stdout, NULL);
     if (argc < 3) {
         printf ("ERROR: need space id or host_port string\n");
         exit (1);
     }
+    
     uint32_t space_id = atoi (argv[1]);
     char* host_port   = argv[2];
 
-    printf ("From %s, %d\n", __func__, __LINE__);
-    
-    struct tnt_stream *tnt = tnt_net (NULL);             // Создание нового потока
-    tnt_set (tnt, TNT_OPT_URI, host_port);               // Установка порта
-    if (tnt_connect (tnt) < 0) {                         // обработка ошибок
+  
+    struct tnt_stream *tnt = tnt_net (NULL);          
+    tnt_set (tnt, TNT_OPT_URI, host_port);               
+    if (tnt_connect (tnt) < 0) {                         
         printf("Connection refused\n");
         exit (1);
     }

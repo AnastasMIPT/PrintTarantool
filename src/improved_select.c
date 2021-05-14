@@ -8,6 +8,17 @@
 
 const uint32_t MaxKeyFieldsInTuple   = 10;
 
+
+
+/*! Function for efficient select slice from space. Slice bounded by key of first tuple and limit
+*	\param stream     stream object 
+*	\param space_id   space no
+*	\param limit      limit of tuples to select
+*	\param key        key object. Tuples will be selected with this key with GT iterator.
+*	\param reply      pointer to reply object for storing result
+*   
+*   \returns primary key from last tuple in reply
+*/
 struct tnt_stream* select_some_after_key (struct tnt_stream* s, uint32_t space_id,
                                             uint32_t limit, struct tnt_stream* key, struct tnt_reply* reply) {
     
@@ -30,6 +41,16 @@ struct tnt_stream* select_some_after_key (struct tnt_stream* s, uint32_t space_i
     return get_new_key_by_reply (s, space_id, reply);
 }
 
+
+
+/*! Function for efficient select first limit elements.
+*	\param stream     stream object 
+*	\param space_id   space no
+*	\param limit      limit of tuples to select
+*	\param reply      pointer to reply object for storing result
+*   
+*   \returns primary key from last tuple in reply
+*/
 struct tnt_stream* select_some_first (struct tnt_stream* s, uint32_t space_id, uint32_t limit,
                                                                         struct tnt_reply* reply) {
     assert (s);
@@ -53,6 +74,15 @@ struct tnt_stream* select_some_first (struct tnt_stream* s, uint32_t space_id, u
     return get_new_key_by_reply (s, space_id, reply);
 }
 
+
+/*! Function getting last key from reply
+*	\param stream     stream object 
+*	\param space_id   space no
+*	\param limit      limit of tuples to select
+*	\param reply      pointer to reply object for storing result
+*   
+*   \returns primary key from last tuple in reply
+*/
 struct tnt_stream* get_new_key_by_reply (struct tnt_stream* s, uint32_t space_id, struct tnt_reply* reply) {
     assert (reply);
     assert (s);
