@@ -33,6 +33,8 @@ void main(int argc, char** argv) {
 
     struct tnt_reply reply = {};
     struct tnt_stream* cur_tuple = select_some_first (tnt, space_id, NumTuplesInOneRequest, &reply);
+
+
     print_element (&reply.data, 0);
     printf ("\n");
 

@@ -34,8 +34,8 @@ struct tnt_stream* select_some_after_key (struct tnt_stream* s, uint32_t space_i
     s->read_reply (s, reply);
     if (reply->code != 0) {
         printf ("Select failed.\n");
-        return NULL;
-        exit (1);
+        printf ("ERROR: %s\n", reply->error);
+        exit(1);
     }
 
     return get_new_key_by_reply (s, space_id, reply);
@@ -54,9 +54,7 @@ struct tnt_stream* select_some_after_key (struct tnt_stream* s, uint32_t space_i
 struct tnt_stream* select_some_first (struct tnt_stream* s, uint32_t space_id, uint32_t limit,
                                                                         struct tnt_reply* reply) {
     assert (s);
-
-    printf ("From %s, %d\n", __func__, __LINE__);
-    
+   
     struct tnt_stream* tuple = tnt_object (NULL);        
     tnt_object_format (tuple, "[]");            
     ssize_t result = tnt_select (s, space_id, 0, limit, 0, TNT_ITER_GT, tuple);
@@ -67,7 +65,7 @@ struct tnt_stream* select_some_first (struct tnt_stream* s, uint32_t space_id, u
     s->read_reply (s, reply);
     if (reply->code != 0) {
         printf ("Select failed.\n");
-        return NULL;
+        printf ("ERROR: %s\n", reply->error);
         exit (1);
     }
 
