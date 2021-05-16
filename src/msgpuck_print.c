@@ -15,7 +15,7 @@ void print_element (const char** data, unsigned int spaces_num) {
     switch (element_type)
     {
     case MP_ARRAY:
-        print_array (data, spaces_num);       
+        print_array (data, spaces_num, 1);       
         break;
     case MP_UINT:
         print_uint  (data, spaces_num);       
@@ -45,17 +45,19 @@ void print_element (const char** data, unsigned int spaces_num) {
     }
 }
 
-void print_array   (const char** data, unsigned int spaces_num) {
+void print_array   (const char** data, unsigned int spaces_num, uint8_t outer_brackets_are) {
     uint32_t elem_count = mp_decode_array (data);
     
     unsigned int i = 0;
-    printf ("[");
-    if (elem_count > NumElemInTupleOnOneLineS) printf ("\n");
+
+    if (outer_brackets_are) printf ("[");
+
+    if (elem_count > NumElemInTupleOnOneLineS && outer_brackets_are) printf ("\n");
     spaces_num += 2;
     for (i = 0; i < elem_count; ++i) {
         if (elem_count > NumElemInTupleOnOneLineS) print_spaces (spaces_num);
         print_element (data, spaces_num);
-        if (i != elem_count - 1) printf (", ");
+        if (i != elem_count - 1 || !outer_brackets_are) printf (", ");
         if (elem_count > NumElemInTupleOnOneLineS) {
             printf ("\n");
         } else if ( mp_typeof (**data) == MP_MAP) {
@@ -65,7 +67,7 @@ void print_array   (const char** data, unsigned int spaces_num) {
     }
     spaces_num -= 2;
     if (elem_count > NumElemInTupleOnOneLineS) print_spaces (spaces_num);
-    printf ("]");
+    if (outer_brackets_are) printf ("]");
 }
 
 void print_uint    (const char** data, unsigned int spaces_num) {

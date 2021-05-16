@@ -12,11 +12,11 @@
 #include "../include/msgpuck_sprint.h"
 #include "../include/improved_select.h"
 
-const uint32_t NumTuplesInOneRequest = 6;
+const uint32_t NumTuplesInOneRequest = 100;
 
 void main(int argc, char** argv) {
     if (argc < 3) {
-        printf ("ERROR: need space id or host_port string\n");
+        printf ("ERROR: need space id as first argument and host_port string as second\n");
         exit (1);
     }
     
@@ -35,8 +35,7 @@ void main(int argc, char** argv) {
     struct tnt_stream* cur_tuple = select_some_first (tnt, space_id, NumTuplesInOneRequest, &reply);
 
 
-    print_element (&reply.data, 0);
-    printf ("\n");
+    print_array (&reply.data, 0, 0);
 
     while(true) {
         struct tnt_reply reply = {};
@@ -46,8 +45,7 @@ void main(int argc, char** argv) {
             break;
         }
 
-        print_element (&reply.data, 0);
-        printf("\n");
+        print_array (&reply.data, 0, 0);
     }
     
     tnt_close (tnt);

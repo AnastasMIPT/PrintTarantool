@@ -4,7 +4,7 @@
 
 extern "C" void sprint_str (const char** data, unsigned int spaces_num, char** sprint_buf);
 extern "C" void sprint_uint (const char** data, unsigned int spaces_num, char** sprint_buf);
-extern "C" void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf);
+extern "C" void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf, uint8_t outer_brackets_are);
 
 void TestPrintStr () {
     TEST_INIT (0);
@@ -49,7 +49,7 @@ void TestPrintArray () {
 
         const char* data_p = data;
         char* printed_data_p = printed_data;
-        sprint_array (&data_p, 0, &printed_data_p);
+        sprint_array (&data_p, 0, &printed_data_p, 1);
         printf ("prited data = *%s*\n", printed_data);
 
         fail_if (strncmp (printed_data, "[\"test str\", \"somth\", 27]", 26) != 0);
@@ -66,7 +66,7 @@ void TestPrintArray () {
         
         const char* data_p   = data;
         char* printed_data_p = printed_data;
-        sprint_array (&data_p, 0, &printed_data_p);
+        sprint_array (&data_p, 0, &printed_data_p, 1);
     
         printf ("prited data = *%s*\n", printed_data);
         fail_if (strncmp (printed_data, "[27, [24, 123]]", 16) != 0);
@@ -85,7 +85,7 @@ void TestPrintArray () {
         
         const char* data_p   = data;
         char* printed_data_p = printed_data;
-        sprint_array (&data_p, 0, &printed_data_p);
+        sprint_array (&data_p, 0, &printed_data_p, 1);
     
         printf ("prited data = *%s*\n", printed_data);
         fail_if (strncmp (printed_data, "[\"test str\", [265, 38, \"dog\"], \"some str\", 98]", 47) != 0);

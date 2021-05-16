@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 
 /*! Function for printing arbitrary MsgPack object
@@ -17,7 +18,7 @@ void print_element (const char** data, unsigned int spaces_num);
 *	\param reply pointer to buffer with reply form commands like select 
 *	\param spaces_num number of spaces to indent
 */
-void print_array   (const char** data, unsigned int spaces_num);
+void print_array   (const char** data, unsigned int spaces_num, uint8_t outer_brackets_are);
 
 /*! Function for printing arbitrary MsgPack unsigned int
 *	\param reply pointer to buffer with reply form commands like select 

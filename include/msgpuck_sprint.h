@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /*! Function for printing arbitrary MsgPack object
 *	\param reply pointer to buffer with reply form commands like select 
@@ -18,7 +19,7 @@ void sprint_element (const char** data, unsigned int spaces_num, char** sprint_b
 *	\param spaces_num number of spaces to indent
 *	\param sprint_buf string to caontain resul, if NULL result will be print to the standart output
 */
-void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf);
+void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf, uint8_t outer_brackets_are);
 
 /*! Function for printing arbitrary MsgPack unsigned int
 *	\param reply pointer to buffer with reply form commands like select 

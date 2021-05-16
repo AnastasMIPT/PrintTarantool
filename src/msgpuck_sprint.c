@@ -14,7 +14,7 @@ void sprint_element (const char** data, unsigned int spaces_num, char** sprint_b
     switch (element_type)
     {
     case MP_ARRAY:
-        sprint_array (data, spaces_num, sprint_buf);       
+        sprint_array (data, spaces_num, sprint_buf, 1);       
         break;
     case MP_UINT:
         sprint_uint  (data, spaces_num, sprint_buf);       
@@ -44,14 +44,16 @@ void sprint_element (const char** data, unsigned int spaces_num, char** sprint_b
     }
 }
 
-void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf) {
+void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_buf, uint8_t outer_brackets_are) {
     uint32_t elem_count = mp_decode_array (data);
     
     unsigned int i = 0;
-    sprintf (*sprint_buf, "[");
-    *sprint_buf += 1;
+    if (outer_brackets_are) {
+        sprintf (*sprint_buf, "[");
+        *sprint_buf += 1;
+    }
     
-    if (elem_count > NumElemInTupleOnOneLine)  {
+    if (elem_count > NumElemInTupleOnOneLine && outer_brackets_are)  {
         sprintf (*sprint_buf, "\n");
         *sprint_buf += 1;
     }
@@ -64,7 +66,7 @@ void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_b
         }
         sprint_element (data, spaces_num, sprint_buf);
         
-        if (i != elem_count - 1)  {
+        if (i != elem_count - 1 || !outer_brackets_are)  {
             sprintf (*sprint_buf, ", ");
             *sprint_buf += 2;
         }
@@ -80,8 +82,11 @@ void sprint_array   (const char** data, unsigned int spaces_num, char** sprint_b
     }
     spaces_num -= 2;
     if (elem_count > NumElemInTupleOnOneLine) sprint_spaces (spaces_num, sprint_buf);
-    sprintf (*sprint_buf, "]");
-    *sprint_buf += 1;
+    
+    if (outer_brackets_are) {
+        sprintf (*sprint_buf, "]");
+        *sprint_buf += 1;
+    }
 }
 
 void sprint_uint    (const char** data, unsigned int spaces_num, char** sprint_buf) {
