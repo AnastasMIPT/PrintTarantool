@@ -28,4 +28,4 @@ Steps to install:
 ```
 make install
 ```
-After this you can execute command `print_space` *space_id* in any directory.
+After this you can execute command `print_space` *space_id* *IP:host* in any directory. For example, `print_space 512 127.0.0.1:3301`
