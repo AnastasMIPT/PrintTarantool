@@ -3,7 +3,6 @@ In this repository you can find utility for printing [spaces](https://www.tarant
 
 ## Dependencies
 * [cconn](https://github.com/tarantool/tarantool-c)
-* [tarantool](https://github.com/tarantool/tarantool)
 
 ## Build
 
