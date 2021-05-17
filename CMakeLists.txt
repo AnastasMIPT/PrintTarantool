@@ -2,10 +2,19 @@ cmake_minimum_required(VERSION 3.0)
 project(print-c-connector VERSION 1.0 LANGUAGES C CXX)
 
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_INCLUDE_PATH})
+
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+find_package(CConn)
+
+if (NOT CCONN_FOUND)
+    message(FATAL_ERROR "C-connector was not found, make sure you have downloaded and installed the c-connector")
+endif()
 
 add_executable(print_space ../src/print_space.c ../src/mp_source.c ../src/msgpuck_print.c ../src/msgpuck_sprint.c ../src/improved_select.c ../src/additional_utilities.c)
 target_link_libraries(print_space PUBLIC tarantool)
