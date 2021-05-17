@@ -13,7 +13,7 @@ endif()
 find_package(CConn)
 
 if (NOT CCONN_FOUND)
-    message(FATAL_ERROR "C-connector was not found, make sure you have downloaded and installed the c-connector")
+    message(FATAL_ERROR "C-connector was not found, make sure you have downloaded and installed the c-connector https://github.com/tarantool/tarantool-c.git")
 endif()
 
 add_executable(print_space ../src/print_space.c ../src/mp_source.c ../src/msgpuck_print.c ../src/msgpuck_sprint.c ../src/improved_select.c ../src/additional_utilities.c)
