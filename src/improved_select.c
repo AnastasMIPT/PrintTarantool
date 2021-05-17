@@ -23,6 +23,10 @@ const uint32_t MaxKeyFieldsInTuple   = 10;
 struct tnt_stream* select_some_after_key (struct tnt_stream* s, uint32_t space_id,
                                             uint32_t limit, struct tnt_stream* key, struct tnt_reply* reply) {
     
+    assert (s);
+    assert (reply);
+    assert (key);
+
     ssize_t result = tnt_select (s, space_id, 0, limit, 0, TNT_ITER_GT, key);  
     tnt_flush (s);
 
